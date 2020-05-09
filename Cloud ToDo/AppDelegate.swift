@@ -42,7 +42,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
          application to it. This property is optional since there are legitimate
          error conditions that could cause the creation of the store to fail.
         */
-        let container = NSPersistentCloudKitContainer(name: "Cloud_ToDo")
+        let container = NSPersistentCloudKitContainer(name: "ToDo")
+
+        // Enable remote notifications
+        guard let description = container.persistentStoreDescriptions.first else {
+            fatalError("###\(#function): Failed to retrieve a persistent store description.")
+        }
+        description.setOption(true as NSNumber, forKey: NSPersistentStoreRemoteChangeNotificationPostOptionKey)
+
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
                 // Replace this implementation with code to handle the error appropriately.
@@ -59,6 +66,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }
         })
+
+        container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+        container.viewContext.automaticallyMergesChangesFromParent = true
+
+        // Observe Core Data remote change notifications.
+        NotificationCenter.default.addObserver(
+            self, selector: #selector(self.processUpdate),
+            name: .NSPersistentStoreRemoteChange, object: container.persistentStoreCoordinator)
+
         return container
     }()
 
@@ -78,5 +94,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
+    @objc
+    func processUpdate(notification: NSNotification) {
+        print("iCloud notification: Something has changed")
+    }
 }
 

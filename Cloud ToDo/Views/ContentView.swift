@@ -64,7 +64,9 @@ struct TodoItemDetail: View {
                 TextField("Details", text: $todo.details)
                     .frame(height: 180)
 
-//                Text(todo.)
+                Button("Publish") {
+                    (UIApplication.shared.delegate as? AppDelegate)?.publishRecordFor(self.todo)
+                }
             }
         }
         .onDisappear(perform: {

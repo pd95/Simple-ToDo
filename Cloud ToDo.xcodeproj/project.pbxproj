@@ -17,6 +17,7 @@
 		17D529B22465CE9D0079DDC9 /* TodoItem+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D529B02465CE9D0079DDC9 /* TodoItem+CoreDataClass.swift */; };
 		17D529B32465CE9D0079DDC9 /* TodoItem+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D529B12465CE9D0079DDC9 /* TodoItem+CoreDataProperties.swift */; };
 		17D529DF2466A8EB0079DDC9 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17D529DE2466A8EB0079DDC9 /* CloudKit.framework */; };
+		17DE3CB62468937D0071291F /* NSPersistentCloudKitContainer+CloudKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17DE3CB52468937D0071291F /* NSPersistentCloudKitContainer+CloudKit.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,6 +34,7 @@
 		17D529B12465CE9D0079DDC9 /* TodoItem+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TodoItem+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		17D529DC2466A2E60079DDC9 /* Cloud ToDo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Cloud ToDo.entitlements"; sourceTree = "<group>"; };
 		17D529DE2466A8EB0079DDC9 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
+		17DE3CB52468937D0071291F /* NSPersistentCloudKitContainer+CloudKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSPersistentCloudKitContainer+CloudKit.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +69,7 @@
 		170AFD292465C4710095389D /* Cloud ToDo */ = {
 			isa = PBXGroup;
 			children = (
+				17DE3CB7246896520071291F /* Extensions */,
 				170AFD452465C5A80095389D /* Model */,
 				170AFD462465C5B60095389D /* Views */,
 				170AFD2A2465C4710095389D /* AppDelegate.swift */,
@@ -112,6 +115,14 @@
 				17D529DE2466A8EB0079DDC9 /* CloudKit.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		17DE3CB7246896520071291F /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				17DE3CB52468937D0071291F /* NSPersistentCloudKitContainer+CloudKit.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -189,6 +200,7 @@
 				170AFD322465C4710095389D /* ContentView.swift in Sources */,
 				170AFD2D2465C4710095389D /* SceneDelegate.swift in Sources */,
 				17D529AB2465C6D50079DDC9 /* ToDo.xcdatamodeld in Sources */,
+				17DE3CB62468937D0071291F /* NSPersistentCloudKitContainer+CloudKit.swift in Sources */,
 				17D529B32465CE9D0079DDC9 /* TodoItem+CoreDataProperties.swift in Sources */,
 				17D529B22465CE9D0079DDC9 /* TodoItem+CoreDataClass.swift in Sources */,
 			);

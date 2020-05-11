@@ -57,22 +57,60 @@ struct TodoEditor: View {
 struct TodoItemDetail: View {
     @Environment(\.managedObjectContext) var moc
     @ObservedObject var todo: TodoItem
+    @State var fetchingState = true
+    @State var isPublished = false
 
     var body: some View {
         Form {
             Section(header: Text("Details")) {
                 TextField("Details", text: $todo.details)
                     .frame(height: 180)
-
-                Button("Publish") {
-                    (UIApplication.shared.delegate as? AppDelegate)?.publishRecordFor(self.todo)
+            }
+            .onAppear {
+                if self.fetchingState {
+                    (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.isRecordPublished(of: self.todo, completion: { (result) in
+                        if case .success(let found) = result {
+                            self.isPublished = found
+                        }
+                        self.fetchingState = false
+                    })
                 }
             }
         }
         .onDisappear(perform: {
             self.moc.mySave("TodoItemDetail")
         })
+        .navigationBarItems(trailing: Button(action: togglePublish, label: {
+                Image(systemName: cloudButtonName)
+                    .padding(4)
+            })
+            .environment(\.isEnabled, !fetchingState)
+        )
         .navigationBarTitle(todo.title)
+    }
+
+    var cloudButtonName: String {
+        if fetchingState {
+            return "icloud"
+        }
+
+        return isPublished ? "icloud.slash" : "icloud.and.arrow.up"
+    }
+
+    func togglePublish() {
+        fetchingState = true
+        if isPublished {
+            (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.unpublishRecord(of: self.todo, completion: { _ in
+                self.isPublished = false
+                self.fetchingState = false
+            })
+        }
+        else {
+            (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.publishRecord(of: self.todo, completion: { _ in
+                self.isPublished = true
+                self.fetchingState = false
+            })
+        }
     }
 }
 
@@ -107,7 +145,6 @@ struct TodoList: View {
         .navigationBarItems(trailing: Button(action: addItem) {
             Image(systemName: "plus")
                 .padding(6)
-                .background(Color.red)
         })
     }
 

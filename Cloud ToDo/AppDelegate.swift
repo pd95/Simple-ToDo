@@ -95,47 +95,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
 
-    func publishRecordFor(_ object: NSManagedObject) {
-        if let record = persistentContainer.record(for: object.objectID) {
-            print("record=\(record.recordID.recordName)")
-            print("record zone=\(record.recordID.zoneID.zoneName)")
-
-
-
-            let container = CKContainer(identifier: "iCloud.com.yourcompany.Cloud-ToDo.todo")
-
-            let database = container.publicCloudDatabase
-            let publicRecordId = CKRecord.ID(recordName: record.recordID.recordName, zoneID: CKRecordZone.default().zoneID)
-
-            database.fetch(withRecordID: publicRecordId) { (existingRecord, error) in
-                let publicRecord: CKRecord
-                if let error = error {
-                    print("Error \(error.localizedDescription) occured")
-                    publicRecord = CKRecord(recordType: record.recordType, recordID: publicRecordId)
-                }
-                else {
-                    print("Record \(existingRecord!.recordID.recordName) fetched")
-                    publicRecord = existingRecord!
-                }
-
-                // Updating content of record
-                for key in record.allKeys() {
-                    publicRecord[key] = record[key]
-                }
-
-                // Storing public record
-                database.save(publicRecord) { (record, error) in
-                    if let error = error {
-                        print("Error \(error.localizedDescription) occured")
-                    }
-                    else {
-                        print("Record \(record!.recordID.recordName) saved")
-                    }
-                }
-            }
-        }
-    }
-
     @objc
     func processUpdate(notification: NSNotification) {
         print("iCloud notification: Something has changed")

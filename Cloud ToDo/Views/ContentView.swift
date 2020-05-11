@@ -90,6 +90,7 @@ struct TodoItemDetail: View {
                 Image(systemName: cloudButtonName)
                     .padding(4)
             })
+            .opacity(canPublish ? 1.0 : 0.0)
             .environment(\.isEnabled, canPublish && !fetchingState)
         )
         .navigationBarTitle(todo.title)
@@ -98,7 +99,7 @@ struct TodoItemDetail: View {
     var cloudButtonName: String {
         print("canPublish=\(canPublish)")
         if !canPublish {
-            return ""
+            return "xmark"
         }
         print("fetchingState=\(fetchingState)")
         if fetchingState {

@@ -59,6 +59,7 @@ struct TodoItemDetail: View {
     @ObservedObject var todo: TodoItem
     @State var fetchingState = true
     @State var isPublished = false
+    @State var canPublish = true
 
     var body: some View {
         Form {
@@ -69,8 +70,13 @@ struct TodoItemDetail: View {
             .onAppear {
                 if self.fetchingState {
                     AppDelegate.shared.persistentContainer.isRecordPublished(of: self.todo, completion: { (result) in
-                        if case .success(let found) = result {
-                            self.isPublished = found
+                        switch result {
+                            case .failure(let error):
+                                print("Can't publish: \(error)")
+                                self.canPublish = false
+                                break;
+                            case .success(let found):
+                                self.isPublished = found
                         }
                         self.fetchingState = false
                     })
@@ -84,16 +90,22 @@ struct TodoItemDetail: View {
                 Image(systemName: cloudButtonName)
                     .padding(4)
             })
-            .environment(\.isEnabled, !fetchingState)
+            .environment(\.isEnabled, canPublish && !fetchingState)
         )
         .navigationBarTitle(todo.title)
     }
 
     var cloudButtonName: String {
+        print("canPublish=\(canPublish)")
+        if !canPublish {
+            return ""
+        }
+        print("fetchingState=\(fetchingState)")
         if fetchingState {
             return "icloud"
         }
 
+        print("isPublished=\(isPublished)")
         return isPublished ? "icloud.slash" : "icloud.and.arrow.up"
     }
 

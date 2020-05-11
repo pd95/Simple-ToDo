@@ -68,7 +68,7 @@ struct TodoItemDetail: View {
             }
             .onAppear {
                 if self.fetchingState {
-                    (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.isRecordPublished(of: self.todo, completion: { (result) in
+                    AppDelegate.shared.persistentContainer.isRecordPublished(of: self.todo, completion: { (result) in
                         if case .success(let found) = result {
                             self.isPublished = found
                         }
@@ -100,13 +100,13 @@ struct TodoItemDetail: View {
     func togglePublish() {
         fetchingState = true
         if isPublished {
-            (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.unpublishRecord(of: self.todo, completion: { _ in
+            AppDelegate.shared.persistentContainer.unpublishRecord(of: self.todo, completion: { _ in
                 self.isPublished = false
                 self.fetchingState = false
             })
         }
         else {
-            (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.publishRecord(of: self.todo, completion: { _ in
+            AppDelegate.shared.persistentContainer.publishRecord(of: self.todo, completion: { _ in
                 self.isPublished = true
                 self.fetchingState = false
             })

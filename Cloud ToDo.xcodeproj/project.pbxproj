@@ -421,7 +421,7 @@
 				17587969246D3ADD00BEF862 /* ToDo 2.xcdatamodel */,
 				17D529AA2465C6D50079DDC9 /* ToDo.xcdatamodel */,
 			);
-			currentVersion = 17D529AA2465C6D50079DDC9 /* ToDo.xcdatamodel */;
+			currentVersion = 17587969246D3ADD00BEF862 /* ToDo 2.xcdatamodel */;
 			path = ToDo.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

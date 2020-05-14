@@ -44,8 +44,10 @@ extension NSPersistentCloudKitContainer {
                 print("Error \(error.localizedDescription) occured")
                 if createIfMissing {
                     let newRecord = CKRecord(recordType: record.recordType, recordID: publicRecordId)
+                    print("Creating record")
                     completion(.success(.new(newRecord)))
                 }
+                print("Missing record")
                 completion(.success(.missing(error)))
             }
             else {
@@ -62,9 +64,11 @@ extension NSPersistentCloudKitContainer {
                     completion(.failure(error))
                 case .success(let result):
                     if case .found(_) = result {
+                        print("isRecordPublished: Record found")
                         completion(.success(true))
                     }
                     else if case .missing(_) = result {
+                        print("isRecordPublished: Record missing")
                         completion(.success(false))
                     }
             }
@@ -82,7 +86,7 @@ extension NSPersistentCloudKitContainer {
         fetchPublicCKRecord(of: object) { result in
             switch result {
                 case .failure(let error):
-                    print("publishRecord error: \(error)")
+                    print("publishRecord: error: \(error)")
                     completion(.failure(error))
 
                 case .success(let result):
@@ -94,6 +98,7 @@ extension NSPersistentCloudKitContainer {
                         case .new(let record):
                             publicRecord = record
                         case .missing(let error):
+                            print("publishRecord: Record missing")
                             completion(.failure(.publishFailed(error)))
                             return
                         default:
@@ -108,11 +113,11 @@ extension NSPersistentCloudKitContainer {
                     // Storing public record
                     self.appContainer.publicCloudDatabase.save(publicRecord) { (record, error) in
                         if let error = error {
-                            print("publishRecord error: \(error)")
+                            print("publishRecord: error: \(error)")
                             completion(.failure(.publishFailed(error)))
                         }
                         else {
-                            print("Record \(record!.recordID.recordName) saved")
+                            print("publishRecord: Record \(record!.recordID.recordName) saved")
                             completion(.success(record!))
                         }
                     }

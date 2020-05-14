@@ -28,102 +28,14 @@ extension NSManagedObjectContext {
     }
 }
 
-struct TodoEditor: View {
-    @Environment(\.managedObjectContext) var moc
-    @Environment(\.presentationMode) var presentationMode
-
-    @Binding var todo: TodoItem
-
-    var body: some View {
-        NavigationView {
-            Form {
-                TextField("Title", text: $todo.title)
-                TextField("Details", text: $todo.details)
-                //            Toggle("Done", isOn: $todo.done)
-                //            .toggleStyle(SwitchToggleStyle())
-            }
-            .onDisappear(perform: {
-                self.moc.mySave("TodoEditor")
-            })
-            .navigationBarTitle(todo.title.isEmpty ? "New item" : todo.title)
-            .navigationBarItems(trailing: Button("Done", action: {
-                self.presentationMode.wrappedValue.dismiss()
-            }))
-        }
-        .navigationViewStyle(StackNavigationViewStyle())
-    }
+enum Sheet {
+    case addItem
+    case discoverFriends
 }
 
-struct TodoItemDetail: View {
-    @Environment(\.managedObjectContext) var moc
-    @ObservedObject var todo: TodoItem
-    @State var fetchingState = true
-    @State var isPublished = false
-    @State var canPublish = true
-
-    var body: some View {
-        Form {
-            Section(header: Text("Details")) {
-                TextField("Details", text: $todo.details)
-                    .frame(height: 180)
-            }
-            .onAppear {
-                if self.fetchingState {
-                    AppDelegate.shared.persistentContainer.isRecordPublished(of: self.todo, completion: { (result) in
-                        switch result {
-                            case .failure(let error):
-                                print("Can't publish: \(error)")
-                                self.canPublish = false
-                                break;
-                            case .success(let found):
-                                self.isPublished = found
-                        }
-                        self.fetchingState = false
-                    })
-                }
-            }
-        }
-        .onDisappear(perform: {
-            self.moc.mySave("TodoItemDetail")
-        })
-        .navigationBarItems(trailing: Button(action: togglePublish, label: {
-                Image(systemName: cloudButtonName)
-                    .padding(4)
-            })
-            .opacity(canPublish ? 1.0 : 0.0)
-            .environment(\.isEnabled, canPublish && !fetchingState)
-        )
-        .navigationBarTitle(todo.title)
-    }
-
-    var cloudButtonName: String {
-        print("canPublish=\(canPublish)")
-        if !canPublish {
-            return "xmark"
-        }
-        print("fetchingState=\(fetchingState)")
-        if fetchingState {
-            return "icloud"
-        }
-
-        print("isPublished=\(isPublished)")
-        return isPublished ? "icloud.slash" : "icloud.and.arrow.up"
-    }
-
-    func togglePublish() {
-        fetchingState = true
-        if isPublished {
-            AppDelegate.shared.persistentContainer.unpublishRecord(of: self.todo, completion: { _ in
-                self.isPublished = false
-                self.fetchingState = false
-            })
-        }
-        else {
-            AppDelegate.shared.persistentContainer.publishRecord(of: self.todo, completion: { _ in
-                self.isPublished = true
-                self.fetchingState = false
-            })
-        }
+extension Sheet: Identifiable {
+    var id: Int {
+        self.hashValue
     }
 }
 
@@ -134,6 +46,7 @@ struct TodoList: View {
         NSSortDescriptor(keyPath: \TodoItem.createDate, ascending: false),
     ]) var todos: FetchedResults<TodoItem>
 
+    @State private var sheet: Sheet?
     @State private var addedItem: TodoItem?
 
     var body: some View {
@@ -150,18 +63,37 @@ struct TodoList: View {
             }
             .onDelete(perform: deleteItems)
         }
-        .sheet(item: $addedItem, onDismiss: save) { (item) -> TodoEditor in
-            var editedItem = item
-            return TodoEditor(todo: Binding<TodoItem>(get: { editedItem }, set: { editedItem = $0 }))
-        }
+        .sheet(item: $sheet, onDismiss: save, content: sheetContent)
         .navigationBarTitle("To Do")
-        .navigationBarItems(trailing: Button(action: addItem) {
-            Image(systemName: "plus")
-                .padding(6)
+        .navigationBarItems(
+            leading: Button(action: { self.sheet = .discoverFriends }) {
+                Image(systemName: "person.icloud")
+                    .padding(6)
+            },
+            trailing: Button(action: showAddItem) {
+                Image(systemName: "plus")
+                    .padding(6)
         })
     }
 
-    func addItem() {
+    func sheetContent(sheet: Sheet) -> some View {
+        switch sheet {
+            case .addItem:
+                return AnyView(
+                    TodoEditor(todo: Binding<TodoItem>(
+                        get: {
+                            self.addedItem!
+                        },
+                        set: {
+                            self.addedItem = $0
+                        })
+                ))
+            case .discoverFriends:
+                return AnyView(DiscoverPeopleView())
+        }
+    }
+    
+    func showAddItem() {
         let addedItem = TodoItem(context: self.moc)
         addedItem.title = ""
         addedItem.details = ""
@@ -169,6 +101,7 @@ struct TodoList: View {
         addedItem.createDate = Date()
 
         self.addedItem = addedItem
+        self.sheet = .addItem
     }
 
     func deleteItems(at offsets: IndexSet) {

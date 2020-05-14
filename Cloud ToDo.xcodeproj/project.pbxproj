@@ -18,6 +18,9 @@
 		17D529B32465CE9D0079DDC9 /* TodoItem+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D529B12465CE9D0079DDC9 /* TodoItem+CoreDataProperties.swift */; };
 		17D529DF2466A8EB0079DDC9 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17D529DE2466A8EB0079DDC9 /* CloudKit.framework */; };
 		17DE3CB62468937D0071291F /* NSPersistentCloudKitContainer+CloudKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17DE3CB52468937D0071291F /* NSPersistentCloudKitContainer+CloudKit.swift */; };
+		17E962EB246C5299000B8914 /* DiscoverPeopleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E962EA246C5299000B8914 /* DiscoverPeopleView.swift */; };
+		17E962ED246C52F7000B8914 /* TodoItemDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E962EC246C52F7000B8914 /* TodoItemDetail.swift */; };
+		17E962EF246C535B000B8914 /* TodoEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E962EE246C535B000B8914 /* TodoEditor.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,6 +38,9 @@
 		17D529DC2466A2E60079DDC9 /* Cloud ToDo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Cloud ToDo.entitlements"; sourceTree = "<group>"; };
 		17D529DE2466A8EB0079DDC9 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		17DE3CB52468937D0071291F /* NSPersistentCloudKitContainer+CloudKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSPersistentCloudKitContainer+CloudKit.swift"; sourceTree = "<group>"; };
+		17E962EA246C5299000B8914 /* DiscoverPeopleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverPeopleView.swift; sourceTree = "<group>"; };
+		17E962EC246C52F7000B8914 /* TodoItemDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoItemDetail.swift; sourceTree = "<group>"; };
+		17E962EE246C535B000B8914 /* TodoEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoEditor.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +111,9 @@
 			isa = PBXGroup;
 			children = (
 				170AFD312465C4710095389D /* ContentView.swift */,
+				17E962EC246C52F7000B8914 /* TodoItemDetail.swift */,
+				17E962EE246C535B000B8914 /* TodoEditor.swift */,
+				17E962EA246C5299000B8914 /* DiscoverPeopleView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -196,13 +205,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				17E962EF246C535B000B8914 /* TodoEditor.swift in Sources */,
 				170AFD2B2465C4710095389D /* AppDelegate.swift in Sources */,
 				170AFD322465C4710095389D /* ContentView.swift in Sources */,
+				17E962EB246C5299000B8914 /* DiscoverPeopleView.swift in Sources */,
 				170AFD2D2465C4710095389D /* SceneDelegate.swift in Sources */,
 				17D529AB2465C6D50079DDC9 /* ToDo.xcdatamodeld in Sources */,
 				17DE3CB62468937D0071291F /* NSPersistentCloudKitContainer+CloudKit.swift in Sources */,
 				17D529B32465CE9D0079DDC9 /* TodoItem+CoreDataProperties.swift in Sources */,
 				17D529B22465CE9D0079DDC9 /* TodoItem+CoreDataClass.swift in Sources */,
+				17E962ED246C52F7000B8914 /* TodoItemDetail.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

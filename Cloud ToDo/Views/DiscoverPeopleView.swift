@@ -10,15 +10,15 @@ import SwiftUI
 import CloudKit
 
 struct DiscoverPeopleView: View {
-    typealias IdendityCallBack = (CKUserIdentity)->()
+    typealias IdentityCallBack = (CKUserIdentity)->()
     @Environment(\.presentationMode) var presentationMode
 
-    let selectedPerson: IdendityCallBack? = nil
+    let selectedPerson: IdentityCallBack? = nil
     @State private var identities = [CKUserIdentity]()
 
     var body: some View {
         NavigationView {
-            List(identities, id: \.contactIdentifiers) { identity in
+            List(identities, id: \.userRecordID?.recordName) { identity in
                 Button(action: { self.selectedPerson?(identity) }) {
                     Text(self.formatter.string(from: identity.nameComponents!))
                 }

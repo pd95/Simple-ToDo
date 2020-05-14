@@ -21,5 +21,7 @@ extension TodoItem {
     @NSManaged public var details: String
     @NSManaged public var done: Bool
     @NSManaged public var title: String
+    @NSManaged public var isPublic: Bool
+    @NSManaged public var isShared: Bool
 
 }

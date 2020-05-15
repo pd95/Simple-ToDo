@@ -13,6 +13,8 @@
 		170AFD342465C4740095389D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 170AFD332465C4740095389D /* Assets.xcassets */; };
 		170AFD372465C4740095389D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 170AFD362465C4740095389D /* Preview Assets.xcassets */; };
 		170AFD3A2465C4740095389D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 170AFD382465C4740095389D /* LaunchScreen.storyboard */; };
+		1735E99B246EBC6E00456077 /* ProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1735E99A246EBC6E00456077 /* ProgressView.swift */; };
+		1735E99D246F19C100456077 /* ActivityIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1735E99C246F19C100456077 /* ActivityIndicatorView.swift */; };
 		17D529AB2465C6D50079DDC9 /* ToDo.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 17D529A92465C6D50079DDC9 /* ToDo.xcdatamodeld */; };
 		17D529B22465CE9D0079DDC9 /* TodoItem+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D529B02465CE9D0079DDC9 /* TodoItem+CoreDataClass.swift */; };
 		17D529B32465CE9D0079DDC9 /* TodoItem+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D529B12465CE9D0079DDC9 /* TodoItem+CoreDataProperties.swift */; };
@@ -32,6 +34,8 @@
 		170AFD362465C4740095389D /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		170AFD392465C4740095389D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		170AFD3B2465C4740095389D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1735E99A246EBC6E00456077 /* ProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressView.swift; sourceTree = "<group>"; };
+		1735E99C246F19C100456077 /* ActivityIndicatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityIndicatorView.swift; sourceTree = "<group>"; };
 		17587969246D3ADD00BEF862 /* ToDo 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "ToDo 2.xcdatamodel"; sourceTree = "<group>"; };
 		17D529AA2465C6D50079DDC9 /* ToDo.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ToDo.xcdatamodel; sourceTree = "<group>"; };
 		17D529B02465CE9D0079DDC9 /* TodoItem+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TodoItem+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -115,6 +119,8 @@
 				17E962EC246C52F7000B8914 /* TodoItemDetail.swift */,
 				17E962EE246C535B000B8914 /* TodoEditor.swift */,
 				17E962EA246C5299000B8914 /* DiscoverPeopleView.swift */,
+				1735E99A246EBC6E00456077 /* ProgressView.swift */,
+				1735E99C246F19C100456077 /* ActivityIndicatorView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -209,6 +215,7 @@
 				17E962EF246C535B000B8914 /* TodoEditor.swift in Sources */,
 				170AFD2B2465C4710095389D /* AppDelegate.swift in Sources */,
 				170AFD322465C4710095389D /* ContentView.swift in Sources */,
+				1735E99D246F19C100456077 /* ActivityIndicatorView.swift in Sources */,
 				17E962EB246C5299000B8914 /* DiscoverPeopleView.swift in Sources */,
 				170AFD2D2465C4710095389D /* SceneDelegate.swift in Sources */,
 				17D529AB2465C6D50079DDC9 /* ToDo.xcdatamodeld in Sources */,
@@ -216,6 +223,7 @@
 				17D529B32465CE9D0079DDC9 /* TodoItem+CoreDataProperties.swift in Sources */,
 				17D529B22465CE9D0079DDC9 /* TodoItem+CoreDataClass.swift in Sources */,
 				17E962ED246C52F7000B8914 /* TodoItemDetail.swift in Sources */,
+				1735E99B246EBC6E00456077 /* ProgressView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

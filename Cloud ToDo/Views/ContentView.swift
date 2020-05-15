@@ -123,10 +123,13 @@ struct TodoList: View {
 }
 
 struct ContentView: View {
+    @State private var showProgressView: Bool = false
+
     var body: some View {
         NavigationView {
             TodoList()
         }
+        .withProgressView($showProgressView)
     }
 }
 

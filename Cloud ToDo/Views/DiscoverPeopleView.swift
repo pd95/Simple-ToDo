@@ -15,6 +15,7 @@ struct DiscoverPeopleView: View {
 
     let selectedPerson: IdentityCallBack? = nil
     @State private var identities = [CKUserIdentity]()
+    @State private var isLoading: Bool = false
 
     var body: some View {
         NavigationView {
@@ -34,12 +35,14 @@ struct DiscoverPeopleView: View {
                 self.presentationMode.wrappedValue.dismiss()
             }))
         }
+        .withProgressView($isLoading)
     }
 
     private let formatter = PersonNameComponentsFormatter()
 
 
     func discoverFriends() {
+        isLoading = true
         CKContainer(identifier: "iCloud.com.yourcompany.Cloud-ToDo.todo").discoverAllIdentities(completionHandler: { users, error in
             guard let userIdentities = users, error == nil else {
 
@@ -48,9 +51,10 @@ struct DiscoverPeopleView: View {
                 return
             }
 
-            DispatchQueue.main.async(execute: {
+            DispatchQueue.main.async {
+                self.isLoading = false
                 self.identities = userIdentities
-            })
+            }
         })
     }
 }

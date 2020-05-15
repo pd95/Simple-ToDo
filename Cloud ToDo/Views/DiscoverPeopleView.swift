@@ -46,7 +46,22 @@ struct DiscoverPeopleView: View {
         CKContainer(identifier: "iCloud.com.yourcompany.Cloud-ToDo.todo").discoverAllIdentities(completionHandler: { users, error in
             guard let userIdentities = users, error == nil else {
 
-                print("fetch user error " + error!.localizedDescription)
+                if let ckerror = error as? CKError {
+                    print("CloudKit Error")
+                    for key in ckerror.errorUserInfo.keys {
+                        if let value = ckerror.errorUserInfo[key] {
+                            print("    \(key): \(value)")
+                        }
+                    }
+                    print("fetch user error \(String(describing: ckerror.errorUserInfo[NSLocalizedDescriptionKey]))")
+                }
+                else {
+                    print("fetch user error " + error!.localizedDescription)
+                }
+
+                DispatchQueue.main.async {
+                    self.isLoading = false
+                }
 
                 return
             }

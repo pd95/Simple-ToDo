@@ -1,6 +1,6 @@
 //
 //  CloudKitManager.swift
-//  Cloud ToDo
+//  ToDo
 //
 //  Created by Philipp on 18.05.20.
 //  Copyright © 2020 Philipp. All rights reserved.

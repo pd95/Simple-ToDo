@@ -1,6 +1,6 @@
 //
 //  TodoItem+CoreDataClass.swift
-//  Cloud ToDo
+//  ToDo
 //
 //  Created by Philipp on 08.05.20.
 //  Copyright © 2020 Philipp. All rights reserved.

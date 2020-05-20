@@ -32,7 +32,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		170AFD272465C4710095389D /* Cloud ToDo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Cloud ToDo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		170AFD272465C4710095389D /* ToDo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		170AFD2A2465C4710095389D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		170AFD2C2465C4710095389D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		170AFD312465C4710095389D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -52,7 +52,7 @@
 		17D529AA2465C6D50079DDC9 /* ToDo.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ToDo.xcdatamodel; sourceTree = "<group>"; };
 		17D529B02465CE9D0079DDC9 /* TodoItem+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TodoItem+CoreDataClass.swift"; sourceTree = "<group>"; };
 		17D529B12465CE9D0079DDC9 /* TodoItem+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TodoItem+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		17D529DC2466A2E60079DDC9 /* Cloud ToDo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Cloud ToDo.entitlements"; sourceTree = "<group>"; };
+		17D529DC2466A2E60079DDC9 /* ToDo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ToDo.entitlements; sourceTree = "<group>"; };
 		17D529DE2466A8EB0079DDC9 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		17DE3CB52468937D0071291F /* NSPersistentCloudKitContainer+CloudKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSPersistentCloudKitContainer+CloudKit.swift"; sourceTree = "<group>"; };
 		17E962EA246C5299000B8914 /* DiscoverPeopleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverPeopleView.swift; sourceTree = "<group>"; };
@@ -75,7 +75,7 @@
 		170AFD1E2465C4710095389D = {
 			isa = PBXGroup;
 			children = (
-				170AFD292465C4710095389D /* Cloud ToDo */,
+				170AFD292465C4710095389D /* ToDo */,
 				170AFD282465C4710095389D /* Products */,
 				17D529DD2466A8EB0079DDC9 /* Frameworks */,
 			);
@@ -84,12 +84,12 @@
 		170AFD282465C4710095389D /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				170AFD272465C4710095389D /* Cloud ToDo.app */,
+				170AFD272465C4710095389D /* ToDo.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		170AFD292465C4710095389D /* Cloud ToDo */ = {
+		170AFD292465C4710095389D /* ToDo */ = {
 			isa = PBXGroup;
 			children = (
 				17DE3CB7246896520071291F /* Extensions */,
@@ -101,10 +101,10 @@
 				170AFD382465C4740095389D /* LaunchScreen.storyboard */,
 				170AFD3B2465C4740095389D /* Info.plist */,
 				17D529A92465C6D50079DDC9 /* ToDo.xcdatamodeld */,
-				17D529DC2466A2E60079DDC9 /* Cloud ToDo.entitlements */,
+				17D529DC2466A2E60079DDC9 /* ToDo.entitlements */,
 				170AFD352465C4740095389D /* Preview Content */,
 			);
-			path = "Cloud ToDo";
+			path = ToDo;
 			sourceTree = "<group>";
 		};
 		170AFD352465C4740095389D /* Preview Content */ = {
@@ -162,9 +162,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		170AFD262465C4710095389D /* Cloud ToDo */ = {
+		170AFD262465C4710095389D /* ToDo */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 170AFD3E2465C4740095389D /* Build configuration list for PBXNativeTarget "Cloud ToDo" */;
+			buildConfigurationList = 170AFD3E2465C4740095389D /* Build configuration list for PBXNativeTarget "ToDo" */;
 			buildPhases = (
 				170AFD232465C4710095389D /* Sources */,
 				170AFD242465C4710095389D /* Frameworks */,
@@ -174,9 +174,9 @@
 			);
 			dependencies = (
 			);
-			name = "Cloud ToDo";
+			name = ToDo;
 			productName = "Cloud ToDo";
-			productReference = 170AFD272465C4710095389D /* Cloud ToDo.app */;
+			productReference = 170AFD272465C4710095389D /* ToDo.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -194,7 +194,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 170AFD222465C4710095389D /* Build configuration list for PBXProject "Cloud ToDo" */;
+			buildConfigurationList = 170AFD222465C4710095389D /* Build configuration list for PBXProject "ToDo" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -207,7 +207,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				170AFD262465C4710095389D /* Cloud ToDo */,
+				170AFD262465C4710095389D /* ToDo */,
 			);
 		};
 /* End PBXProject section */
@@ -383,12 +383,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = "Cloud ToDo/Cloud ToDo.entitlements";
+				CODE_SIGN_ENTITLEMENTS = ToDo/ToDo.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "\"Cloud ToDo/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "ToDo/Preview\\ Content/Preview\\ Assets.xcassets";
 				DEVELOPMENT_TEAM = P8CC95REUG;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = "Cloud ToDo/Info.plist";
+				INFOPLIST_FILE = ToDo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -405,12 +405,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = "Cloud ToDo/Cloud ToDo.entitlements";
+				CODE_SIGN_ENTITLEMENTS = ToDo/ToDo.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "\"Cloud ToDo/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "ToDo/Preview\\ Content/Preview\\ Assets.xcassets";
 				DEVELOPMENT_TEAM = P8CC95REUG;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = "Cloud ToDo/Info.plist";
+				INFOPLIST_FILE = ToDo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -426,7 +426,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		170AFD222465C4710095389D /* Build configuration list for PBXProject "Cloud ToDo" */ = {
+		170AFD222465C4710095389D /* Build configuration list for PBXProject "ToDo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				170AFD3C2465C4740095389D /* Debug */,
@@ -435,7 +435,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		170AFD3E2465C4740095389D /* Build configuration list for PBXNativeTarget "Cloud ToDo" */ = {
+		170AFD3E2465C4740095389D /* Build configuration list for PBXNativeTarget "ToDo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				170AFD3F2465C4740095389D /* Debug */,

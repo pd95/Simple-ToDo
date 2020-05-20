@@ -1,6 +1,6 @@
 //
 //  ProgressView.swift
-//  Cloud ToDo
+//  ToDo
 //
 //  Created by Philipp on 15.05.20.
 //  Copyright © 2020 Philipp. All rights reserved.

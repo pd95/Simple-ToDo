@@ -20,6 +20,7 @@
 		17B315B624742E1D00C8F708 /* CKTodoItem+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B315B424742E1D00C8F708 /* CKTodoItem+CoreDataClass.swift */; };
 		17B315B724742E1D00C8F708 /* CKTodoItem+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B315B524742E1D00C8F708 /* CKTodoItem+CoreDataProperties.swift */; };
 		17B4968A2475DF310075FC68 /* NSManagedObjectContext+mySave.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B496892475DF310075FC68 /* NSManagedObjectContext+mySave.swift */; };
+		17B4968D2475DFEC0075FC68 /* TodoList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B4968C2475DFEC0075FC68 /* TodoList.swift */; };
 		17B4AF7024745ED400C7F78B /* DiscoverPublicRecords.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B4AF6F24745ED400C7F78B /* DiscoverPublicRecords.swift */; };
 		17B4AF7224746D0500C7F78B /* CKUserIdentity+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B4AF7124746D0500C7F78B /* CKUserIdentity+Ext.swift */; };
 		17D529AB2465C6D50079DDC9 /* ToDo.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 17D529A92465C6D50079DDC9 /* ToDo.xcdatamodeld */; };
@@ -49,6 +50,7 @@
 		17B315B424742E1D00C8F708 /* CKTodoItem+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKTodoItem+CoreDataClass.swift"; sourceTree = "<group>"; };
 		17B315B524742E1D00C8F708 /* CKTodoItem+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKTodoItem+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		17B496892475DF310075FC68 /* NSManagedObjectContext+mySave.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSManagedObjectContext+mySave.swift"; sourceTree = "<group>"; };
+		17B4968C2475DFEC0075FC68 /* TodoList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoList.swift; sourceTree = "<group>"; };
 		17B4AF6F24745ED400C7F78B /* DiscoverPublicRecords.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverPublicRecords.swift; sourceTree = "<group>"; };
 		17B4AF7124746D0500C7F78B /* CKUserIdentity+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKUserIdentity+Ext.swift"; sourceTree = "<group>"; };
 		17D529AA2465C6D50079DDC9 /* ToDo.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ToDo.xcdatamodel; sourceTree = "<group>"; };
@@ -134,6 +136,7 @@
 			isa = PBXGroup;
 			children = (
 				170AFD312465C4710095389D /* ContentView.swift */,
+				17B4968C2475DFEC0075FC68 /* TodoList.swift */,
 				17E962EC246C52F7000B8914 /* TodoItemDetail.swift */,
 				17E962EE246C535B000B8914 /* TodoEditor.swift */,
 				17E962EA246C5299000B8914 /* DiscoverPeopleView.swift */,
@@ -248,6 +251,7 @@
 				17B4AF7024745ED400C7F78B /* DiscoverPublicRecords.swift in Sources */,
 				1735E9A22474059300456077 /* CKTodoItem+CloudKit.swift in Sources */,
 				17B315B724742E1D00C8F708 /* CKTodoItem+CoreDataProperties.swift in Sources */,
+				17B4968D2475DFEC0075FC68 /* TodoList.swift in Sources */,
 				17B4AF7224746D0500C7F78B /* CKUserIdentity+Ext.swift in Sources */,
 				1735E99B246EBC6E00456077 /* ProgressView.swift in Sources */,
 				17B315B624742E1D00C8F708 /* CKTodoItem+CoreDataClass.swift in Sources */,

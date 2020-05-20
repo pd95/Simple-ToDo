@@ -13,6 +13,13 @@ struct TodoItemDetail: View {
     @ObservedObject var todo: TodoItem
     @State var wasPublic: Bool = false
 
+    let isReadOnly: Bool
+    
+    init(todo: TodoItem, isReadOnly: Bool = false) {
+        self.todo = todo
+        self.isReadOnly = isReadOnly
+    }
+
     var body: some View {
         Form {
             Section(header: Text("Details")) {
@@ -22,18 +29,24 @@ struct TodoItemDetail: View {
                 Toggle(isOn: $todo.isPublic, label: { Text("Is public") })
             }
         }
+        .environment(\.isEnabled, !isReadOnly)
         .onAppear {
             self.wasPublic = self.todo.isPublic
         }
         .onDisappear(perform: {
-            self.moc.mySave("TodoItemDetail")
+            if !self.isReadOnly {
+                let hasChanges = self.todo.hasChanges
+                self.moc.mySave("TodoItemDetail")
+                if hasChanges && self.todo.entity == TodoItem.entity(){
 
-            // Public state has changed: update iCloud record
-            if self.todo.isPublic {
-                AppDelegate.shared.persistentContainer.publishRecord(of: self.todo, completion: { _ in })
-            }
-            if self.wasPublic && !self.todo.isPublic {
-                AppDelegate.shared.persistentContainer.unpublishRecord(of: self.todo, completion: { _ in })
+                    // Public state has changed: update iCloud record
+                    if self.todo.isPublic {
+                        AppDelegate.shared.persistentContainer.publishRecord(of: self.todo, completion: { _ in })
+                    }
+                    if self.wasPublic && !self.todo.isPublic {
+                        AppDelegate.shared.persistentContainer.unpublishRecord(of: self.todo, completion: { _ in })
+                    }
+                }
             }
         })
         .navigationBarTitle(todo.title)

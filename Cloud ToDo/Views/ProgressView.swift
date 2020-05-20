@@ -70,6 +70,10 @@ extension View {
                     .opacity(enabled.wrappedValue ? 1 : 0)
             }
     }
+
+    func loading(_ state: Bool) -> some View {
+        return self.preference(key: ProgressIndicatorPreference.self, value: state)
+    }
 }
 
 struct ProgressView_Previews: PreviewProvider {

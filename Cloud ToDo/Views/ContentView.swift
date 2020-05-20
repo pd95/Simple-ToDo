@@ -8,6 +8,7 @@
 
 import SwiftUI
 import CoreData
+import CloudKit
 
 extension NSManagedObjectContext {
     func mySave(_ source: String = "mySave") {
@@ -42,16 +43,32 @@ extension Sheet: Identifiable {
 struct TodoList: View {
     @Environment(\.managedObjectContext) var moc
 
-    @FetchRequest(entity: TodoItem.entity(), sortDescriptors: [
-        NSSortDescriptor(keyPath: \TodoItem.createDate, ascending: false),
-    ]) var todos: FetchedResults<TodoItem>
+    @FetchRequest(entity: TodoItem.entity(),
+                  sortDescriptors: [
+                    NSSortDescriptor(keyPath: \TodoItem.createDate, ascending: false)
+                  ],
+                  predicate: NSPredicate(format: "self.entity == %@", TodoItem.entity())
+    )
+    var todos: FetchedResults<TodoItem>
 
     @State private var sheet: Sheet?
     @State private var addedItem: TodoItem?
+    @State private var showPublic: Bool = false
+    @State private var selectedUser: CKUserIdentity?
 
     var body: some View {
         List {
-            ForEach(self.todos) { todo in
+            NavigationLink(destination: DiscoverPublicRecords(), isActive: self.$showPublic) {
+                Text("Public")
+                    .font(.headline)
+            }
+            if self.selectedUser != nil {
+                NavigationLink(destination: DiscoverUserRecords(user: self.selectedUser!), tag: self.selectedUser!, selection: self.$selectedUser) {
+                    Text("People")
+                        .font(.headline)
+                }
+            }
+            ForEach(self.todos) { (todo: TodoItem) in
                 NavigationLink(destination: TodoItemDetail(todo: todo)) {
                     VStack(alignment: .leading){
                         Text(todo.title)
@@ -89,7 +106,14 @@ struct TodoList: View {
                         })
                 ))
             case .discoverFriends:
-                return AnyView(DiscoverPeopleView())
+                return AnyView(DiscoverPeopleView(selectedPerson: { (selectedUser) in
+                    print("Selected User: \(selectedUser)")
+                    self.selectedUser = selectedUser
+                    self.sheet = nil
+                })
+                .environment(\.managedObjectContext, moc)
+                .environmentObject(CloudKitManager.shared)
+            )
         }
     }
     

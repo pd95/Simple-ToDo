@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="16119" systemVersion="19E287" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="YES" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="16119" systemVersion="19E287" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="CKTodoItem" representedClassName="CKTodoItem" parentEntity="TodoItem" syncable="YES">
         <attribute name="ckRecordID" attributeType="String" defaultValueString=""/>
         <attribute name="ckUserID" attributeType="String" defaultValueString=""/>
@@ -12,6 +12,12 @@
         <attribute name="isShared" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="title" attributeType="String" defaultValueString=""/>
     </entity>
+    <configuration name="Cloud" usedWithCloudKit="YES">
+        <memberEntity name="TodoItem"/>
+    </configuration>
+    <configuration name="Local">
+        <memberEntity name="CKTodoItem"/>
+    </configuration>
     <elements>
         <element name="CKTodoItem" positionX="-63" positionY="27" width="128" height="73"/>
         <element name="TodoItem" positionX="4.2734375" positionY="-163.09765625" width="128" height="133"/>

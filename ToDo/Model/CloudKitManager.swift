@@ -32,9 +32,10 @@ class CloudKitManager: ObservableObject {
         case deleted
     }
 
+    let containerIdentifier = "iCloud.com.yourcompany.Cloud-ToDo.todo"
 
     lazy var appContainer : CKContainer = {
-        CKContainer(identifier: "iCloud.com.yourcompany.Cloud-ToDo.todo")
+        CKContainer(identifier: containerIdentifier)
     }()
 
     @Published var accountStatus: CKAccountStatus?

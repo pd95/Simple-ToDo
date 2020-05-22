@@ -46,11 +46,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         */
         let container = NSPersistentCloudKitContainer(name: "ToDo")
 
+        let appSupport = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
+
+        // Create a store description for a local store
+        let localStoreLocation = URL(fileURLWithPath: "local.store", relativeTo: appSupport)
+        let localStoreDescription =
+            NSPersistentStoreDescription(url: localStoreLocation)
+        localStoreDescription.configuration = "Local"
+
+        // Create a store description for a CloudKit-backed local store
+        let cloudStoreLocation = URL(fileURLWithPath: "cloud.store", relativeTo: appSupport)
+        let cloudStoreDescription =
+            NSPersistentStoreDescription(url: cloudStoreLocation)
+        cloudStoreDescription.configuration = "Cloud"
+
+        // Set the container options on the cloud store
+        cloudStoreDescription.cloudKitContainerOptions =
+            NSPersistentCloudKitContainerOptions(
+                containerIdentifier: CloudKitManager.shared.containerIdentifier)
+
         // Enable remote notifications
-        guard let description = container.persistentStoreDescriptions.first else {
-            fatalError("###\(#function): Failed to retrieve a persistent store description.")
-        }
-        description.setOption(true as NSNumber, forKey: NSPersistentStoreRemoteChangeNotificationPostOptionKey)
+        cloudStoreDescription.setOption(true as NSNumber, forKey: NSPersistentStoreRemoteChangeNotificationPostOptionKey)
+
+        // Update the container's list of store descriptions
+        container.persistentStoreDescriptions = [
+            cloudStoreDescription,
+            localStoreDescription
+        ]
 
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {

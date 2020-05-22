@@ -35,18 +35,15 @@ extension CKTodoItem {
             }
         }
         self.ckRecordID = record.recordID.recordName
-        self.ckUserID = record.creatorUserRecordID!.recordName
-        print(record)
-        print(self)
+        if CloudKitManager.shared.isOwnUserRecord(record.creatorUserRecordID!) {
+            self.ckUserID = CKCurrentUserDefaultName
+        }
+        else {
+            self.ckUserID = record.creatorUserRecordID!.recordName
+        }
     }
 
     var isOwnRecord: Bool {
-        if let userID = CloudKitManager.shared.userRecordID {
-            print("ckUserID=\(self.ckUserID)")
-            print("userID.recordName=\(userID.recordName)")
-            print("CKCurrentUserDefaultName=\(CKCurrentUserDefaultName)")
-            return self.ckUserID == userID.recordName || self.ckUserID == CKCurrentUserDefaultName
-        }
-        return false
+        return self.ckUserID == CKCurrentUserDefaultName
     }
 }

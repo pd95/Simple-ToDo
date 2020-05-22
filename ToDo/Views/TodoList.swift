@@ -24,6 +24,8 @@ extension Sheet: Identifiable {
 struct TodoList: View {
     @Environment(\.managedObjectContext) var moc
 
+    @EnvironmentObject var cloudKitManager: CloudKitManager
+
     @FetchRequest(entity: TodoItem.entity(),
                   sortDescriptors: [
                     NSSortDescriptor(keyPath: \TodoItem.createDate, ascending: false)
@@ -67,7 +69,9 @@ struct TodoList: View {
             leading: Button(action: { self.sheet = .discoverFriends }) {
                 Image(systemName: "person.icloud")
                     .padding(6)
-            },
+            }
+            .environment(\.isEnabled, cloudKitManager.accountStatus == .some(.available))
+            ,
             trailing: Button(action: showAddItem) {
                 Image(systemName: "plus")
                     .padding(6)

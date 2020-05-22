@@ -1,16 +1,5 @@
 "use strict";
 
-CloudKit.configure({
-    containers: [{
-        containerIdentifier: 'iCloud.com.yourcompany.Cloud-ToDo.todo',
-        apiTokenAuth: {
-            apiToken: 'f756d7331f3f5b269e0eaa06a852f9914c788fd6aa351dadcb7c2ecd14f0a7d2',
-            persist: true
-        },
-        environment: 'development'
-    }]
-});
-
 var user = {}
 
 function updateUI(records, parentID) {

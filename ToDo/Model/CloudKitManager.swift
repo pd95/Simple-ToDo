@@ -8,6 +8,7 @@
 
 import Foundation
 import CloudKit
+import Combine
 
 class CloudKitManager: ObservableObject {
 
@@ -36,20 +37,23 @@ class CloudKitManager: ObservableObject {
         CKContainer(identifier: "iCloud.com.yourcompany.Cloud-ToDo.todo")
     }()
 
+    @Published var accountStatus: CKAccountStatus?
     var userRecordID: CKRecord.ID?
+
+    var cancellables = Set<AnyCancellable>()
 
     // Private initializer to ensure Singleton
     private init() {
-        // Fetch the users personal record ID
-        appContainer.fetchUserRecordID { (userRecord, error) in
-            if let error = error {
-                self.logError(error: error)
+        // Fetch initial account status
+        fetchAccountStatus()
+
+        // Register for iCloud account change notifications
+        NotificationCenter.default.publisher(for: .CKAccountChanged)
+            .sink { (notification) in
+                print("AccountStatus changed: \(notification.description)")
+                self.fetchAccountStatus()
             }
-            else {
-                print("User record fetched: \(userRecord!)")
-                self.userRecordID = userRecord
-            }
-        }
+            .store(in: &cancellables)
     }
 
     private func logError(error: Error, caller: String = #function) {
@@ -67,6 +71,53 @@ class CloudKitManager: ObservableObject {
         }
     }
 
+    private func fetchAccountStatus() {
+        appContainer.accountStatus { status, error in
+            if let error = error {
+                self.logError(error: error)
+            } else {
+                DispatchQueue.main.async {
+                    self.accountStatus = status
+                }
+                if status == .available {
+                    // the user is logged in, so fetch the user record
+                    self.fetchUserRecord()
+                }
+                else {
+                    print("fetchAccountStatus: unexpected CKAccountStatus \(status.rawValue)")
+                }
+            }
+        }
+    }
+
+    private func fetchUserRecord() {
+        // Fetch the users personal record ID
+        appContainer.fetchUserRecordID { (userRecordID, error) in
+            if let error = error {
+                self.logError(error: error)
+            }
+            else {
+                print("User record fetched: \(userRecordID!)")
+
+                self.userRecordID = userRecordID
+                DispatchQueue.main.async {
+                    self.objectWillChange.send()
+                }
+            }
+        }
+    }
+
+    func isCKAvailable() -> Bool {
+        return accountStatus == .available
+    }
+
+    func isOwnUserRecord(_ userRecordID: CKRecord.ID) -> Bool {
+        if let userID = self.userRecordID {
+            return userRecordID.recordName == userID.recordName
+        }
+        return false
+    }
+    
     func fetchPublicCKRecord(of record: CKRecord?, createIfMissing: Bool = true, completion: @escaping (Result<ManageCKResult, ManageCKError>)->Void) {
         guard let record = record else {
             completion(.failure(.managedObjectHasNoCKRecord))
@@ -80,13 +131,13 @@ class CloudKitManager: ObservableObject {
 
         appContainer.publicCloudDatabase.fetch(withRecordID: publicRecordId) { (existingRecord, error) in
             if let error = error {
-                self.logError(error: error)
                 if createIfMissing {
                     let newRecord = CKRecord(recordType: record.recordType, recordID: publicRecordId)
                     print("Creating record")
                     completion(.success(.new(newRecord)))
                 }
                 else {
+                    self.logError(error: error)
                     print("Missing record")
                     completion(.success(.missing(error)))
                 }
@@ -221,6 +272,11 @@ class CloudKitManager: ObservableObject {
 
     func fetchUserIdentityRecords(for userIDs: [String], completion: @escaping (Result<[String:CKUserIdentity], ManageCKError>)->Void)  {
         var userMapResult = [String:CKUserIdentity]()
+
+        guard isCKAvailable() else {
+            completion(.success(userMapResult))
+            return
+        }
 
         // Make list of users unique and create the lookup data
         let uniqueUsers = Set<String>(userIDs)

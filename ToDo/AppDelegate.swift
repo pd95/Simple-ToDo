@@ -69,7 +69,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         })
 
-        container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+        container.viewContext.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
         container.viewContext.automaticallyMergesChangesFromParent = true
 
         // Observe Core Data remote change notifications.

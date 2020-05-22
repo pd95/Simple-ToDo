@@ -50,46 +50,65 @@ struct DiscoverPublicRecords: View {
     }
 
     private func refreshData() {
-        let fetchRequest : NSFetchRequest<NSFetchRequestResult> = NSFetchRequest(entityName: "CKTodoItem")
-        let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
-        batchDeleteRequest.resultType = .resultTypeObjectIDs
-
-        do {
-            try moc.execute(batchDeleteRequest)
-            self.moc.mySave("DiscoverPublicRecords: refreshData after delete")
-
-            DispatchQueue.global().async {
-
-                self.cloudKitManager.fetchPublicCKRecords(completion: { result in
-                    guard case Result.success(let records) = result else {
-                        print("Error fetching records for selected user")
-                        self.finishLoading()
-                        return
-                    }
-                    print("fetched records: \(records)")
-                    let todoItems : [CKTodoItem] = records.map {
-                        CKTodoItem(record: $0, context: self.moc)
-                    }
-                    print("fetched items: \(todoItems)")
-                    self.moc.mySave("DiscoverPublicRecords: refreshData after add")
-                    //                changes[NSInsertedObjectsKey] = todoItems.map(\.objectID)
-                    //                NSManagedObjectContext.mergeChanges(fromRemoteContextSave: changes, into: [self.moc])
-
-                    let userIDs = todoItems.map(\.ckUserID)
-                    self.cloudKitManager.fetchUserIdentityRecords(for: userIDs, completion: { result in
-                        guard case Result.success(let userMap) = result else {
-                            print("Error fetching user records")
-                            self.finishLoading()
-                            return
-                        }
-                        print("userRecords=\(userMap)")
-                        self.finishLoading(userMap)
-                    })
-                })
+        self.cloudKitManager.fetchPublicCKRecords(completion: { result in
+            guard case Result.success(let records) = result else {
+                print("Error fetching records for selected user")
+                self.finishLoading()
+                return
             }
-        } catch {
-            fatalError("Failed to perform batch update: \(error)")
-        }
+//            print("fetched records: \(records)")
+
+            var recordsByID = [String : CKRecord]()
+            records.forEach {
+                recordsByID[$0.recordID.recordName] = $0
+            }
+            print("recordsByID.count = \(recordsByID.count)")
+
+            var userIDs = Set<String>()
+
+            AppDelegate.shared.persistentContainer.performBackgroundTask { (moc) in
+                do {
+                    let fetchRequest : NSFetchRequest<CKTodoItem> = CKTodoItem.fetchRequest()
+                    fetchRequest.predicate = NSPredicate(format: "self.entity == %@", CKTodoItem.entity())
+                    let result = try moc.fetch(fetchRequest)
+
+                    print("result.count = \(result.count)")
+
+                    result.forEach { (item) in
+                        if let record = recordsByID[item.ckRecordID] {
+                            print("Updating \(item.ckRecordID)")
+                            item.importFields(from: record)
+                            recordsByID.removeValue(forKey: item.ckRecordID)
+                            userIDs.insert(item.ckUserID)
+                        }
+                        else {
+                            print("Deleting \(item.ckRecordID)")
+                            moc.delete(item)
+                        }
+                    }
+
+                    for (key,value) in recordsByID {
+                        print("Creating \(key)")
+                        let item = CKTodoItem(record: value, context: moc)
+                        userIDs.insert(item.ckUserID)
+                    }
+
+                    try moc.save()
+                } catch {
+                    fatalError("Failed to perform batch delete: \(error)")
+                }
+            }
+
+            self.cloudKitManager.fetchUserIdentityRecords(for: Array(userIDs), completion: { result in
+                guard case Result.success(let userMap) = result else {
+                    print("Error fetching user records")
+                    self.finishLoading()
+                    return
+                }
+                print("userRecords=\(userMap)")
+                self.finishLoading(userMap)
+            })
+        })
     }
 
     private func finishLoading(_ userMap: [String:CKUserIdentity] = [:]) {

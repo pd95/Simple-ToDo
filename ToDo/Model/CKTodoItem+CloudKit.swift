@@ -13,6 +13,10 @@ import CloudKit
 extension CKTodoItem {
     convenience init(record: CKRecord, context: NSManagedObjectContext) {
         self.init(context: context)
+        importFields(from: record)
+    }
+
+    func importFields(from record: CKRecord) {
         for attribute in self.entity.attributesByName {
             let key = attribute.key
             let type = attribute.value.attributeType

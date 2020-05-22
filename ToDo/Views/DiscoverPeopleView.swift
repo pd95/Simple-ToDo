@@ -139,11 +139,14 @@ struct DiscoverPeopleView: View {
     private func discoverFriends() {
         isLoading = true
         cloudKitManager.discoverAllUserIdentities(completion: { result in
-            guard case Result.success(let userIdentities) = result else {
+            guard case Result.success(var userIdentities) = result else {
                 print("Error fetching users")
                 self.finishLoading()
                 return
             }
+            // Remove "own" user
+            userIdentities = userIdentities.filter({ !self.cloudKitManager.isOwnUserRecord($0.userRecordID!) })
+
             print("fetched records: \(userIdentities)")
             self.finishLoading(userIdentities)
         })

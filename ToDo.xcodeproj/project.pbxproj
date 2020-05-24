@@ -59,6 +59,7 @@
 		17D529DC2466A2E60079DDC9 /* ToDo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ToDo.entitlements; sourceTree = "<group>"; };
 		17D529DE2466A8EB0079DDC9 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		17DE3CB52468937D0071291F /* NSPersistentCloudKitContainer+CloudKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSPersistentCloudKitContainer+CloudKit.swift"; sourceTree = "<group>"; };
+		17E4EABE247B285B00EF6F93 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		17E962EA246C5299000B8914 /* DiscoverPeopleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverPeopleView.swift; sourceTree = "<group>"; };
 		17E962EC246C52F7000B8914 /* TodoItemDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoItemDetail.swift; sourceTree = "<group>"; };
 		17E962EE246C535B000B8914 /* TodoEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoEditor.swift; sourceTree = "<group>"; };
@@ -79,6 +80,7 @@
 		170AFD1E2465C4710095389D = {
 			isa = PBXGroup;
 			children = (
+				17E4EABE247B285B00EF6F93 /* README.md */,
 				170AFD292465C4710095389D /* ToDo */,
 				170AFD282465C4710095389D /* Products */,
 				17D529DD2466A8EB0079DDC9 /* Frameworks */,

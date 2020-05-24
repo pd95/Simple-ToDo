@@ -22,13 +22,15 @@ extension NSPersistentCloudKitContainer {
     }
 
     func publishRecord(of object: NSManagedObject,
-                       completion: @escaping (Result<Bool, CloudKitManager.ManageCKError>)->Void) {
-        CloudKitManager.shared.publishRecord(of: self.record(for: object.objectID), completion: completion)
+                       completion: ((Result<Bool, CloudKitManager.ManageCKError>)->Void)? = nil) {
+        let record = self.record(for: object.objectID)
+        CloudKitManager.shared.publishRecord(of: record, completion: completion)
     }
 
     func unpublishRecord(of object: NSManagedObject,
-                         completion: @escaping (Result<Bool, CloudKitManager.ManageCKError>)->Void) {
-        CloudKitManager.shared.unpublishRecord(of: self.record(for: object.objectID), completion: completion)
+                         completion: ((Result<Bool, CloudKitManager.ManageCKError>)->Void)? = nil) {
+        let record = self.record(for: object.objectID)
+        CloudKitManager.shared.unpublishRecord(of: record, completion: completion)
     }
 
 }

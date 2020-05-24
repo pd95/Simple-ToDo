@@ -41,10 +41,10 @@ struct TodoItemDetail: View {
 
                     // Public state has changed: update iCloud record
                     if self.todo.isPublic {
-                        AppDelegate.shared.persistentContainer.publishRecord(of: self.todo, completion: { _ in })
+                        AppDelegate.shared.persistentContainer.publishRecord(of: self.todo)
                     }
                     if self.wasPublic && !self.todo.isPublic {
-                        AppDelegate.shared.persistentContainer.unpublishRecord(of: self.todo, completion: { _ in })
+                        AppDelegate.shared.persistentContainer.unpublishRecord(of: self.todo)
                     }
                 }
             }

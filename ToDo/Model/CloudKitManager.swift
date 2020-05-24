@@ -125,7 +125,6 @@ class CloudKitManager: ObservableObject {
             return
         }
         print("record=\(record.recordID.recordName)")
-        print("record zone=\(record.recordID.zoneID.zoneName)")
 
 
         let publicRecordId = CKRecord.ID(recordName: record.recordID.recordName, zoneID: CKRecordZone.default().zoneID)
@@ -169,73 +168,59 @@ class CloudKitManager: ObservableObject {
         }
     }
 
-    func publishRecord(of record: CKRecord?, completion: @escaping (Result<Bool, ManageCKError>)->Void) {
+    func publishRecord(of record: CKRecord?, completion: ((Result<Bool, ManageCKError>)->Void)? = nil) {
         guard let record = record else {
-            completion(.failure(.managedObjectHasNoCKRecord))
+            completion?(.failure(.managedObjectHasNoCKRecord))
             return
         }
         print("record=\(record.recordID.recordName)")
-        print("record zone=\(record.recordID.zoneID.zoneName)")
 
-        fetchPublicCKRecord(of: record) { result in
-            switch result {
-                case .failure(let error):
+        let publicRecordId = CKRecord.ID(recordName: record.recordID.recordName, zoneID: CKRecordZone.default().zoneID)
+
+        appContainer.publicCloudDatabase.fetch(withRecordID: publicRecordId) { (existingRecord, error) in
+            let publicRecord: CKRecord
+            if let error = error {
+                publicRecord = CKRecord(recordType: record.recordType, recordID: publicRecordId)
+            }
+            else {
+                publicRecord = existingRecord!
+            }
+
+            // Updating content of record
+            for key in record.allKeys() {
+                publicRecord[key] = record[key]
+            }
+
+            // Storing public record
+            self.appContainer.publicCloudDatabase.save(publicRecord) { (record, error) in
+                if let error = error {
                     self.logError(error: error)
-                    completion(.failure(error))
-
-                case .success(let result):
-
-                    let publicRecord: CKRecord
-                    switch result {
-                        case .found(let record):
-                            publicRecord = record
-                        case .new(let record):
-                            publicRecord = record
-                        case .missing(let error):
-                            print("publishRecord: Record missing")
-                            completion(.failure(.publishFailed(error)))
-                            return
-                        default:
-                            fatalError("Unexpected result \(result)")
-                    }
-
-                    // Updating content of record
-                    for key in record.allKeys() {
-                        publicRecord[key] = record[key]
-                    }
-
-                    // Storing public record
-                    self.appContainer.publicCloudDatabase.save(publicRecord) { (record, error) in
-                        if let error = error {
-                            self.logError(error: error)
-                            completion(.failure(.publishFailed(error)))
-                        }
-                        else {
-                            print("publishRecord: Record \(record!.recordID.recordName) saved")
-                            completion(.success(true))
-                        }
-                    }
+                    completion?(.failure(.publishFailed(error)))
+                }
+                else {
+                    print("publishRecord: Record \(record!.recordID.recordName) saved")
+                    completion?(.success(true))
+                }
             }
         }
     }
 
-    func unpublishRecord(of record: CKRecord?, completion: @escaping (Result<Bool, ManageCKError>)->Void) {
+    func unpublishRecord(of record: CKRecord?, completion: ((Result<Bool, ManageCKError>)->Void)? = nil) {
         guard let record = record else {
-            completion(.failure(.managedObjectHasNoCKRecord))
+            completion?(.failure(.managedObjectHasNoCKRecord))
             return
         }
         print("record=\(record.recordID.recordName)")
-        print("record zone=\(record.recordID.zoneID.zoneName)")
 
         let publicRecordId = CKRecord.ID(recordName: record.recordID.recordName, zoneID: CKRecordZone.default().zoneID)
 
         appContainer.publicCloudDatabase.delete(withRecordID: publicRecordId) { (record, error) in
             if let error = error {
                 self.logError(error: error)
-                completion(.failure(.unpublishFailed(error)))
+                completion?(.failure(.unpublishFailed(error)))
             }
             else {
-                completion(.success(true))
+                completion?(.success(true))
             }
         }
     }

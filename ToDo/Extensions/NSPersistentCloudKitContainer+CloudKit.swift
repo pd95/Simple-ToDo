@@ -10,17 +10,6 @@ import CoreData
 
 extension NSPersistentCloudKitContainer {
 
-
-    func fetchPublicCKRecord(of object: NSManagedObject, createIfMissing: Bool = true,
-                             completion: @escaping (Result<CloudKitManager.ManageCKResult, CloudKitManager.ManageCKError>)->Void) {
-        CloudKitManager.shared.fetchPublicCKRecord(of: self.record(for: object.objectID), createIfMissing: createIfMissing, completion: completion)
-    }
-
-    func isRecordPublished(of object: NSManagedObject,
-                           completion: @escaping (Result<Bool, CloudKitManager.ManageCKError>)->Void) {
-        CloudKitManager.shared.isRecordPublished(of: self.record(for: object.objectID), completion: completion)
-    }
-
     func publishRecord(of object: NSManagedObject,
                        completion: ((Result<Bool, CloudKitManager.ManageCKError>)->Void)? = nil) {
         let record = self.record(for: object.objectID)

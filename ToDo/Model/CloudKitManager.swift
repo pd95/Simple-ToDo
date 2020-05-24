@@ -118,55 +118,6 @@ class CloudKitManager: ObservableObject {
         }
         return false
     }
-    
-    func fetchPublicCKRecord(of record: CKRecord?, createIfMissing: Bool = true, completion: @escaping (Result<ManageCKResult, ManageCKError>)->Void) {
-        guard let record = record else {
-            completion(.failure(.managedObjectHasNoCKRecord))
-            return
-        }
-        print("record=\(record.recordID.recordName)")
-
-
-        let publicRecordId = CKRecord.ID(recordName: record.recordID.recordName, zoneID: CKRecordZone.default().zoneID)
-
-        appContainer.publicCloudDatabase.fetch(withRecordID: publicRecordId) { (existingRecord, error) in
-            if let error = error {
-                if createIfMissing {
-                    let newRecord = CKRecord(recordType: record.recordType, recordID: publicRecordId)
-                    print("Creating record")
-                    completion(.success(.new(newRecord)))
-                }
-                else {
-                    self.logError(error: error)
-                    print("Missing record")
-                    completion(.success(.missing(error)))
-                }
-            }
-            else {
-                print("Record \(existingRecord!.recordID.recordName) fetched")
-                completion(.success(.found(existingRecord!)))
-            }
-        }
-    }
-
-    func isRecordPublished(of record: CKRecord?, completion: @escaping (Result<Bool, ManageCKError>)->Void) {
-        fetchPublicCKRecord(of: record, createIfMissing: false) { (result) in
-            switch result {
-                case .failure(let error):
-                    self.logError(error: error)
-                    completion(.failure(error))
-                case .success(let result):
-                    if case .found(_) = result {
-                        print("isRecordPublished: Record found")
-                        completion(.success(true))
-                    }
-                    else if case .missing(_) = result {
-                        print("isRecordPublished: Record missing")
-                        completion(.success(false))
-                    }
-            }
-        }
-    }
 
     func publishRecord(of record: CKRecord?, completion: ((Result<Bool, ManageCKError>)->Void)? = nil) {
         guard let record = record else {
@@ -179,7 +130,7 @@ class CloudKitManager: ObservableObject {
 
         appContainer.publicCloudDatabase.fetch(withRecordID: publicRecordId) { (existingRecord, error) in
             let publicRecord: CKRecord
-            if let error = error {
+            if let _ = error {
                 publicRecord = CKRecord(recordType: record.recordType, recordID: publicRecordId)
             }
             else {

@@ -47,7 +47,7 @@ struct DiscoverPublicRecords: View {
             }
         }
         .navigationBarItems(trailing: Button(action: refreshData) {
-            Image(systemName: "arrow.clockwise")
+            Image(systemName: "arrow.clockwise.icloud")
                 .imageScale(.large)
         })
         .navigationBarTitle("Public records")

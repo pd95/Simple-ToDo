@@ -46,17 +46,21 @@ struct DiscoverPublicRecords: View {
                 self.refreshData()
             }
         }
+        .navigationBarItems(trailing: Button(action: refreshData) {
+            Image(systemName: "arrow.clockwise")
+                .imageScale(.large)
+        })
         .navigationBarTitle("Public records")
     }
 
     private func refreshData() {
+        isLoading = true
         self.cloudKitManager.fetchPublicCKRecords(completion: { result in
             guard case Result.success(let records) = result else {
                 print("Error fetching records for selected user")
                 self.finishLoading()
                 return
             }
-//            print("fetched records: \(records)")
 
             var recordsByID = [String : CKRecord]()
             records.forEach {

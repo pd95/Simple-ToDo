@@ -68,12 +68,14 @@ struct TodoList: View {
         .navigationBarItems(
             leading: Button(action: { self.sheet = .discoverFriends }) {
                 Image(systemName: "person.icloud")
+                    .imageScale(.large)
                     .padding(6)
             }
             .environment(\.isEnabled, cloudKitManager.accountStatus == .some(.available))
             ,
             trailing: Button(action: showAddItem) {
                 Image(systemName: "plus")
+                    .imageScale(.large)
                     .padding(6)
         })
     }
@@ -133,7 +135,10 @@ struct TodoList: View {
 
 struct TodoList_Previews: PreviewProvider {
     static var previews: some View {
-        TodoList()
-            .environment(\.managedObjectContext, AppDelegate.shared.persistentContainer.viewContext)
+        NavigationView {
+            TodoList()
+                .environment(\.managedObjectContext, AppDelegate.shared.persistentContainer.viewContext)
+                .environmentObject(CloudKitManager.shared)
+        }
     }
 }

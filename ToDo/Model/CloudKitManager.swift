@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import os.log
 import CloudKit
 import Combine
 
@@ -57,25 +58,13 @@ class CloudKitManager: ObservableObject {
             .store(in: &cancellables)
     }
 
-    private func logError(error: Error, caller: String = #function) {
-        if let ckerror = error as? CKError {
-            print("\(caller): CloudKit Error")
-            for key in ckerror.errorUserInfo.keys {
-                if let value = ckerror.errorUserInfo[key] {
-                    print("    \(key): \(value)")
-                }
-            }
-            print("\(caller): error \(String(describing: ckerror.errorUserInfo[NSLocalizedDescriptionKey]))")
-        }
-        else {
-            print("\(caller): error " + error.localizedDescription)
-        }
-    }
+    // MARK: - CloudKit stuff
 
     private func fetchAccountStatus() {
+        os_log(.info, log: .ckmanager, "fetchAccountStatus")
         appContainer.accountStatus { status, error in
             if let error = error {
-                self.logError(error: error)
+                os_log(.error, log: .ckmanager, "Fetching accoung status: %{PUBLIC}@", error.localizedDescription)
             } else {
                 DispatchQueue.main.async {
                     self.accountStatus = status
@@ -85,7 +74,7 @@ class CloudKitManager: ObservableObject {
                     self.fetchUserRecord()
                 }
                 else {
-                    print("fetchAccountStatus: unexpected CKAccountStatus \(status.rawValue)")
+                    os_log(.error, log: .ckmanager, "unexpected CKAccountStatus: %{PUBLIC}@", status.rawValue)
                 }
             }
         }
@@ -95,10 +84,10 @@ class CloudKitManager: ObservableObject {
         // Fetch the users personal record ID
         appContainer.fetchUserRecordID { (userRecordID, error) in
             if let error = error {
-                self.logError(error: error)
+                os_log(.error, log: .ckmanager, "Fetching user record: %{PUBLIC}@", error.localizedDescription)
             }
             else {
-                print("User record fetched: \(userRecordID!)")
+                os_log(.info, log: .ckmanager, "User record fetched: %{PUBLIC}@", userRecordID!.recordName)
 
                 self.userRecordID = userRecordID
                 DispatchQueue.main.async {
@@ -124,7 +113,7 @@ class CloudKitManager: ObservableObject {
             completion?(.failure(.managedObjectHasNoCKRecord))
             return
         }
-        print("record=\(record.recordID.recordName)")
+        os_log(.debug, log: .ckmanager, "record: %{PUBLIC}@", record.recordID.recordName)
 
         let publicRecordId = CKRecord.ID(recordName: record.recordID.recordName, zoneID: CKRecordZone.default().zoneID)
 
@@ -145,11 +134,11 @@ class CloudKitManager: ObservableObject {
             // Storing public record
             self.appContainer.publicCloudDatabase.save(publicRecord) { (record, error) in
                 if let error = error {
-                    self.logError(error: error)
+                    os_log(.error, log: .ckmanager, "Storing public record: %{PUBLIC}@", error.localizedDescription)
                     completion?(.failure(.publishFailed(error)))
                 }
                 else {
-                    print("publishRecord: Record \(record!.recordID.recordName) saved")
+                    os_log(.info, log: .ckmanager, "Record saved: %{PUBLIC}@", record!.recordID.recordName)
                     completion?(.success(true))
                 }
             }
@@ -161,13 +150,13 @@ class CloudKitManager: ObservableObject {
             completion?(.failure(.managedObjectHasNoCKRecord))
             return
         }
-        print("record=\(record.recordID.recordName)")
+        os_log(.debug, "record: %{PUBLIC}@", record.recordID.recordName)
 
         let publicRecordId = CKRecord.ID(recordName: record.recordID.recordName, zoneID: CKRecordZone.default().zoneID)
 
         appContainer.publicCloudDatabase.delete(withRecordID: publicRecordId) { (record, error) in
             if let error = error {
-                self.logError(error: error)
+                os_log(.error, log: .ckmanager, "Deleting public record: %{PUBLIC}@", error.localizedDescription)
                 completion?(.failure(.unpublishFailed(error)))
             }
             else {
@@ -178,14 +167,14 @@ class CloudKitManager: ObservableObject {
 
     func fetchPublicCKRecord(for user: CKUserIdentity, completion: @escaping (Result<[CKRecord], ManageCKError>)->Void)  {
         guard let userRecordID = user.userRecordID else {
-            print("User record ID not available")
+            os_log(.error, log: .ckmanager, "User record ID not available")
             return
         }
         let searchPredicate = NSPredicate(format: "creatorUserRecordID == %@", userRecordID)
         let query = CKQuery(recordType: "CD_TodoItem", predicate: searchPredicate)
         appContainer.publicCloudDatabase.perform(query, inZoneWith: .default) { (records, error) in
             if let error = error {
-                self.logError(error: error)
+                os_log(.error, log: .ckmanager, "fetching public record: %{PUBLIC}@", error.localizedDescription)
                 completion(.failure(.recordQueryFailed(error)))
             }
             else {
@@ -198,7 +187,7 @@ class CloudKitManager: ObservableObject {
         let query = CKQuery(recordType: "CD_TodoItem", predicate: NSPredicate(value: true))
         appContainer.publicCloudDatabase.perform(query, inZoneWith: .default) { (records, error) in
             if let error = error {
-                self.logError(error: error)
+                os_log(.error, log: .ckmanager, "Fetching public records: %{PUBLIC}@", error.localizedDescription)
                 completion(.failure(.recordQueryFailed(error)))
             }
             else {
@@ -227,7 +216,7 @@ class CloudKitManager: ObservableObject {
         }
         discoverOperation.discoverUserIdentitiesCompletionBlock = { (error: Error?) in
             if let error = error {
-                self.logError(error: error)
+                os_log(.error, log: .ckmanager, "Discovering user identities: %{PUBLIC}@", error.localizedDescription)
                 completion(.failure(.userQueryFailed(error)))
                 return
             }
@@ -239,7 +228,7 @@ class CloudKitManager: ObservableObject {
     func discoverAllUserIdentities(completion: @escaping (Result<[CKUserIdentity], ManageCKError>)->Void)  {
         appContainer.discoverAllIdentities(completionHandler: { users, error in
             guard let userIdentities = users, error == nil else {
-                self.logError(error: error!)
+                os_log(.error, log: .ckmanager, "Discovering all user identities: %{PUBLIC}@", error!.localizedDescription)
                 completion(.failure(.discoverUsersFailed(error!)))
                 return
             }
